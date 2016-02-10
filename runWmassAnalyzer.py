@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 import sys, os
 import os.path as osp
+import string, random
+
+def randomid(length):
+   return ''.join(random.choice(string.lowercase) for i in range(length))
 
 def getEOSlslist(directory, mask='', prepend='root://eoscms//eos/cms'):
     '''Takes a directory on eos (starting from /store/...) and returns
@@ -47,9 +51,36 @@ def cacheLocally(infile, tmpDir='/tmp/'):
     infile = tmpfile
     return infile
 
+def runBatch(infiles):
+    jobs = []
+    for i,f in enumerate(infiles):
+        runfilename = 'tmp/job_%d.sh'%i
+        print f.split('/')[-1]
+        tmp_file = open('batchSubmissionScript.sh','r')
+        tmp_data = tmp_file.read()
+        tmp_file.close()
+        os.system('mkdir -p tmp/')
+        basedir = osp.abspath('.')
+        
+        tmp_data = tmp_data.replace('AAA', basedir)
+        tmp_data = tmp_data.replace('BBB', f.split('/')[-1])
+        tmp_data = tmp_data.replace('CCC', opts.outDir)
+        tmp_data = tmp_data.replace('XXX', basedir+'/wmassAnalyzer_cc.so')
+        tmp_data = tmp_data.replace('YYY', __file__)
+        tmp_data = tmp_data.replace('ZZZ', args[0])
+        
+        outfile = open(runfilename,'w')
+        outfile.write(tmp_data)
+        outfile.close()
+        jobs.append('bsub -q %s -J %s < %s'%(opts.queue,randomid(6),runfilename))
+    for job in jobs:
+        print 'running:', job
+        if not opts.pretend: os.system(job)
+
+
 def run((infile, outfile, opts)):
-    if infile.startswith("root://"):
-        infile = cacheLocally(infile, os.environ.get('TMPDIR', '/tmp'))
+    ##if infile.startswith("root://"):
+    ##    infile = cacheLocally(infile, os.environ.get('TMPDIR', '/tmp'))
 
     from ROOT import TFile
     fb = TFile.Open(infile)
@@ -103,14 +134,22 @@ if __name__ == '__main__':
     parser.add_option("-p", "--pretend", dest="pretend", action="store_true",
                       default=False,
                       help="Don't run anything");
+    parser.add_option("-b", "--batch", dest="batch", action="store_true",
+                      default=False,
+                      help="Run on the batch system");
     parser.add_option("-o", "--outDir", default="tnptrees",
                       action="store", type="string", dest="outDir",
                       help=("Output directory for trees "
+                            "[default: %default/]"))
+    parser.add_option("-q", "--queue", default='8nh',
+                      type="string", dest="queue",
+                      help=("Submit to specific queue "
                             "[default: %default/]"))
     parser.add_option("-f", "--filter", default='',
                       type="string", dest="filter",
                       help=("Comma separated list of filters to apply "
                             "[default: %default/]"))
+    global opts, args
     (opts, args) = parser.parse_args()
 
     # Collect all input:
@@ -138,22 +177,27 @@ if __name__ == '__main__':
     print "Will process the following files:"
     for ifile in inputfiles: print ifile
 
-    os.system('mkdir -p %s'%opts.outDir)
-
-    # Assemble tasks
-    tasks = []
-    for ifile in inputfiles:
-        oname = '%s.root' % osp.splitext(osp.split(ifile)[1])[0]
-        ofile = osp.join(opts.outDir, oname)
-        tasks.append((ifile,ofile,opts))
-
-    if opts.jobs > 0 and len(tasks) > 1:
-        print "Running in parallel using %d jobs" % opts.jobs
-        from multiprocessing import Pool
-        pool = Pool(opts.jobs)
-        pool.map(run, tasks)
+    if opts.batch:
+        print 'running on the batch'
+        runBatch(inputfiles)
 
     else:
-        print "Running sequentially"
-        map(run, tasks)
+        os.system('mkdir -p %s'%opts.outDir)
+
+        # Assemble tasks
+        tasks = []
+        for ifile in inputfiles:
+            oname = '%s.root' % osp.splitext(osp.split(ifile)[1])[0]
+            ofile = osp.join(opts.outDir, oname)
+            tasks.append((ifile,ofile,opts))
+
+        if opts.jobs > 0 and len(tasks) > 1:
+            print "Running in parallel using %d jobs" % opts.jobs
+            from multiprocessing import Pool
+            pool = Pool(opts.jobs)
+            pool.map(run, tasks)
+
+        else:
+            print "Running sequentially"
+            map(run, tasks)
 
