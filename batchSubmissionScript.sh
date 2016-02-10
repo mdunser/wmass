@@ -17,5 +17,10 @@ echo "ensuring the output directory exists"
 mkdir -p $BASEDIR/$OUTDIR
 echo "BATCH: copying the executable here"
 cp $BASEDIR/$PY_WRAPPER .
+echo "==========================================================================="
+echo "=============== i am going to run this command ============================"
+echo python $PY_WRAPPER $EOS_DIR  -o $BASEDIR/$OUTDIR/ -f $FILENAME
+echo "==========================================================================="
+echo "==========================================================================="
 echo "BATCH: starting the job"
 python $PY_WRAPPER $EOS_DIR  -o $BASEDIR/$OUTDIR/ -f $FILENAME
