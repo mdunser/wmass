@@ -1,0 +1,15 @@
+max 1
+jmax 0
+kmax *
+---------------
+shapes * * WplusWminus_massIDXXX.root $PROCESS $PROCESS_$SYSTEMATIC
+---------------
+bin 1
+observation 1
+------------------------------
+bin             1
+process         YYYMT
+process         -1
+rate            AAA
+--------------------------------
+

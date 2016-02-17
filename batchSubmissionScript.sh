@@ -6,6 +6,7 @@ export EOS_DIR="ZZZ"
 export BASEDIR="AAA"
 export FILENAME="BBB"
 export OUTDIR="CCC"
+export THISDIR="DDD"
 
 echo "BATCH: i am here"
 $PWD
@@ -16,7 +17,7 @@ cp $WMASS_SO .
 echo "ensuring the output directory exists"
 mkdir -p $BASEDIR/$OUTDIR
 echo "BATCH: copying the executable here"
-cp $BASEDIR/$PY_WRAPPER .
+cp $THISDIR/$PY_WRAPPER .
 echo "==========================================================================="
 echo "=============== i am going to run this command ============================"
 echo python $PY_WRAPPER $EOS_DIR  -o $BASEDIR/$OUTDIR/ -f $FILENAME

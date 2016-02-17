@@ -60,14 +60,15 @@ def runBatch(infiles):
         tmp_data = tmp_file.read()
         tmp_file.close()
         os.system('mkdir -p tmp/')
-        basedir = osp.abspath('.')
+        thisdir = osp.abspath('.')
         
-        tmp_data = tmp_data.replace('AAA', basedir)
+        tmp_data = tmp_data.replace('AAA', '/afs/cern.ch/work/m/mdunser/public/wmass/')
         tmp_data = tmp_data.replace('BBB', f.split('/')[-1])
         tmp_data = tmp_data.replace('CCC', opts.outDir)
-        tmp_data = tmp_data.replace('XXX', basedir+'/wmassAnalyzer_cc.so')
+        tmp_data = tmp_data.replace('XXX', thisdir+'/wmassAnalyzer_cc.so')
         tmp_data = tmp_data.replace('YYY', __file__)
         tmp_data = tmp_data.replace('ZZZ', args[0])
+        tmp_data = tmp_data.replace('DDD', thisdir)
         
         outfile = open(runfilename,'w')
         outfile.write(tmp_data)
@@ -79,8 +80,8 @@ def runBatch(infiles):
 
 
 def run((infile, outfile, opts)):
-    ##if infile.startswith("root://"):
-    ##    infile = cacheLocally(infile, os.environ.get('TMPDIR', '/tmp'))
+    if infile.startswith("root://"):
+        infile = cacheLocally(infile, os.environ.get('TMPDIR', '/tmp'))
 
     from ROOT import TFile
     fb = TFile.Open(infile)

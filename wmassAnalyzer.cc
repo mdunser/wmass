@@ -12,8 +12,8 @@
 #include <TChain.h>
 #include <TFile.h>
 
-#include <TH2.h>
 #include <TH1.h>
+#include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TMath.h>
@@ -38,17 +38,17 @@ public :
     // Int_t           Vtx_ndof;
     // Int_t           npu;
     // Double_t        scalePDF;
-    Double_t        parton1_pdgId;
-    Double_t        parton1_x;
-    Double_t        parton2_pdgId;
-    Double_t        parton2_x;
+    // Double_t        parton1_pdgId;
+    // Double_t        parton1_x;
+    // Double_t        parton2_pdgId;
+    // Double_t        parton2_x;
     Double_t        LHE_weight[466];
     // Double_t        pfmet;
     // Double_t        pfmet_phi;
     // Double_t        pfmet_sumEt;
     Double_t        tkmet;
-    Double_t        tkmet_phi;
-    Double_t        tkmet_sumEt;
+    // Double_t        tkmet_phi;
+    // Double_t        tkmet_sumEt;
     // Double_t        gentkmet;
     // Double_t        gentkmet_phi;
     // Double_t        gentkmet_sumEt;
@@ -68,13 +68,13 @@ public :
     // Double_t        pfMetForRegression_phi;
     // Double_t        pfMetForRegression_sumEt;
     Int_t           evtHasTrg;
-    Int_t           njets;
-    Int_t           evtWSel;
-    Int_t           nMuons;
-    Int_t           nTrgMuons;
-    Int_t           noTrgMuonsLeadingPt;
+    // Int_t           njets;
+    // Int_t           evtWSel;
+    // Int_t           nMuons;
+    // Int_t           nTrgMuons;
+    // Int_t           noTrgMuonsLeadingPt;
     Double_t        W_pt;
-    Double_t        W_phi;
+    // Double_t        W_phi;
     Double_t        W_mt;
     // Double_t        WGen_pt;
     // Double_t        WGen_rap;
@@ -87,16 +87,16 @@ public :
     // Double_t        NuGen_mass;
     Double_t        Mu_pt;
     Double_t        Mu_eta;
-    Double_t        Mu_phi;
-    Double_t        Mu_mass;
+    // Double_t        Mu_phi;
+    // Double_t        Mu_mass;
     Double_t        Mu_charge;
     // Double_t        MuRelIso;
     // Double_t        Mu_dxy;
     // Double_t        Mu_dz;
     Int_t           MuIsTightAndIso;
     // Int_t           MuIsTight;
-    Double_t        pt_vis;
-    Double_t        phi_vis;
+    // Double_t        pt_vis;
+    // Double_t        phi_vis;
     // Double_t        MuGen_pt;
     // Double_t        MuGen_eta;
     // Double_t        MuGen_phi;
@@ -124,17 +124,17 @@ public :
     // TBranch        *b_Vtx_ndof;   //!
     // TBranch        *b_npu;   //!
     // TBranch        *b_scalePDF;   //!
-    TBranch        *b_parton1_pdgId;   //!
-    TBranch        *b_parton1_x;   //!
-    TBranch        *b_parton2_pdgId;   //!
-    TBranch        *b_parton2_x;   //!
+    // TBranch        *b_parton1_pdgId;   //!
+    // TBranch        *b_parton1_x;   //!
+    // TBranch        *b_parton2_pdgId;   //!
+    // TBranch        *b_parton2_x;   //!
     TBranch        *b_LHE_weight;   //!
     // TBranch        *b_pfmet;   //!
     // TBranch        *b_pfmet_phi;   //!
     // TBranch        *b_pfmet_sumEt;   //!
     TBranch        *b_tkmet;   //!
-    TBranch        *b_tkmet_phi;   //!
-    TBranch        *b_tkmet_sumEt;   //!
+    // TBranch        *b_tkmet_phi;   //!
+    // TBranch        *b_tkmet_sumEt;   //!
     // TBranch        *b_gentkmet;   //!
     // TBranch        *b_gentkmet_phi;   //!
     // TBranch        *b_gentkmet_sumEt;   //!
@@ -154,13 +154,13 @@ public :
     // TBranch        *b_pfMetForRegression_phi;   //!
     // TBranch        *b_pfMetForRegression_sumEt;   //!
     TBranch        *b_evtHasTrg;   //!
-    TBranch        *b_njets;   //!
-    TBranch        *b_evtWSel;   //!
-    TBranch        *b_nMuons;   //!
-    TBranch        *b_nTrgMuons;   //!
-    TBranch        *b_noTrgMuonsLeadingPt;   //!
+    // TBranch        *b_njets;   //!
+    // TBranch        *b_evtWSel;   //!
+    // TBranch        *b_nMuons;   //!
+    // TBranch        *b_nTrgMuons;   //!
+    // TBranch        *b_noTrgMuonsLeadingPt;   //!
     TBranch        *b_W_pt;   //!
-    TBranch        *b_W_phi;   //!
+    // TBranch        *b_W_phi;   //!
     TBranch        *b_W_mt;   //!
     // TBranch        *b_WGen_pt;   //!
     // TBranch        *b_WGen_rap;   //!
@@ -173,16 +173,16 @@ public :
     // TBranch        *b_NuGen_mass;   //!
     TBranch        *b_Mu_pt;   //!
     TBranch        *b_Mu_eta;   //!
-    TBranch        *b_Mu_phi;   //!
-    TBranch        *b_Mu_mass;   //!
+    // TBranch        *b_Mu_phi;   //!
+    // TBranch        *b_Mu_mass;   //!
     TBranch        *b_Mu_charge;   //!
     // TBranch        *b_MuRelIso;   //!
     // TBranch        *b_Mu_dxy;   //!
     // TBranch        *b_Mu_dz;   //!
     TBranch        *b_MuIsTightAndIso;   //!
     // TBranch        *b_MuIsTight;   //!
-    TBranch        *b_pt_vis;   //!
-    TBranch        *b_phi_vis;   //!
+    // TBranch        *b_pt_vis;   //!
+    // TBranch        *b_phi_vis;   //!
     // TBranch        *b_MuGen_pt;   //!
     // TBranch        *b_MuGen_eta;   //!
     // TBranch        *b_MuGen_phi;   //!
@@ -215,24 +215,17 @@ public :
     bool fIsData;
     Long64_t fNEntries;
     int fMaxEvents;
+    int fNMasses;
+    int fNPDFsCT10;
     virtual void RunJob(TString, bool);
     virtual void Begin(TFile *);
     virtual void End(TFile *);
     virtual bool IsGoodEvent();
     virtual void fillMTandETAHistograms();
     virtual void setMaxEvents(int me){fMaxEvents = me;};
-    TH1F * nominal_mt       [7];
-    TH1F * nominal_muEta    [7];
-    TH1F * nominal_pos_mt   [7];
-    TH1F * nominal_pos_muEta[7];
-    TH1F * nominal_neg_mt   [7];
-    TH1F * nominal_neg_muEta[7];
-    TH1F * ct10_mt   [7][52]; // they have indices 309-361
-    TH1F * ct10_muEta[7][52];
-    TH1F * ct10_pos_mt   [7][52];
-    TH1F * ct10_pos_muEta[7][52];
-    TH1F * ct10_neg_mt   [7][52];
-    TH1F * ct10_neg_muEta[7][52];
+    
+    TH2F * nominal_mtEta;
+    TH2F * ct10_mtEta[202][53];
 
     
 
@@ -255,6 +248,8 @@ wmassAnalyzer::wmassAnalyzer(TTree *tree) : fChain(0)
        f->GetObject("WTreeProducer",tree);
 
     }
+    fNMasses   = 202;
+    fNPDFsCT10 = 52;
     Init(tree);
 }
 
@@ -307,17 +302,17 @@ void wmassAnalyzer::Init(TTree *tree)
     // fChain->SetBranchAddress("Vtx_ndof", &Vtx_ndof, &b_Vtx_ndof);
     // fChain->SetBranchAddress("npu", &npu, &b_npu);
     // fChain->SetBranchAddress("scalePDF", &scalePDF, &b_scalePDF);
-    fChain->SetBranchAddress("parton1_pdgId", &parton1_pdgId, &b_parton1_pdgId);
-    fChain->SetBranchAddress("parton1_x", &parton1_x, &b_parton1_x);
-    fChain->SetBranchAddress("parton2_pdgId", &parton2_pdgId, &b_parton2_pdgId);
-    fChain->SetBranchAddress("parton2_x", &parton2_x, &b_parton2_x);
+    // fChain->SetBranchAddress("parton1_pdgId", &parton1_pdgId, &b_parton1_pdgId);
+    // fChain->SetBranchAddress("parton1_x", &parton1_x, &b_parton1_x);
+    // fChain->SetBranchAddress("parton2_pdgId", &parton2_pdgId, &b_parton2_pdgId);
+    // fChain->SetBranchAddress("parton2_x", &parton2_x, &b_parton2_x);
     fChain->SetBranchAddress("LHE_weight", LHE_weight, &b_LHE_weight);
     // fChain->SetBranchAddress("pfmet", &pfmet, &b_pfmet);
     // fChain->SetBranchAddress("pfmet_phi", &pfmet_phi, &b_pfmet_phi);
     // fChain->SetBranchAddress("pfmet_sumEt", &pfmet_sumEt, &b_pfmet_sumEt);
     fChain->SetBranchAddress("tkmet", &tkmet, &b_tkmet);
-    fChain->SetBranchAddress("tkmet_phi", &tkmet_phi, &b_tkmet_phi);
-    fChain->SetBranchAddress("tkmet_sumEt", &tkmet_sumEt, &b_tkmet_sumEt);
+    // fChain->SetBranchAddress("tkmet_phi", &tkmet_phi, &b_tkmet_phi);
+    // fChain->SetBranchAddress("tkmet_sumEt", &tkmet_sumEt, &b_tkmet_sumEt);
     // fChain->SetBranchAddress("gentkmet", &gentkmet, &b_gentkmet);
     // fChain->SetBranchAddress("gentkmet_phi", &gentkmet_phi, &b_gentkmet_phi);
     // fChain->SetBranchAddress("gentkmet_sumEt", &gentkmet_sumEt, &b_gentkmet_sumEt);
@@ -337,13 +332,13 @@ void wmassAnalyzer::Init(TTree *tree)
     // fChain->SetBranchAddress("pfMetForRegression_phi", &pfMetForRegression_phi, &b_pfMetForRegression_phi);
     // fChain->SetBranchAddress("pfMetForRegression_sumEt", &pfMetForRegression_sumEt, &b_pfMetForRegression_sumEt);
     fChain->SetBranchAddress("evtHasTrg", &evtHasTrg, &b_evtHasTrg);
-    fChain->SetBranchAddress("njets", &njets, &b_njets);
-    fChain->SetBranchAddress("evtWSel", &evtWSel, &b_evtWSel);
-    fChain->SetBranchAddress("nMuons", &nMuons, &b_nMuons);
-    fChain->SetBranchAddress("nTrgMuons", &nTrgMuons, &b_nTrgMuons);
-    fChain->SetBranchAddress("noTrgMuonsLeadingPt", &noTrgMuonsLeadingPt, &b_noTrgMuonsLeadingPt);
+    // fChain->SetBranchAddress("njets", &njets, &b_njets);
+    // fChain->SetBranchAddress("evtWSel", &evtWSel, &b_evtWSel);
+    // fChain->SetBranchAddress("nMuons", &nMuons, &b_nMuons);
+    // fChain->SetBranchAddress("nTrgMuons", &nTrgMuons, &b_nTrgMuons);
+    // fChain->SetBranchAddress("noTrgMuonsLeadingPt", &noTrgMuonsLeadingPt, &b_noTrgMuonsLeadingPt);
     fChain->SetBranchAddress("W_pt", &W_pt, &b_W_pt);
-    fChain->SetBranchAddress("W_phi", &W_phi, &b_W_phi);
+    // fChain->SetBranchAddress("W_phi", &W_phi, &b_W_phi);
     fChain->SetBranchAddress("W_mt", &W_mt, &b_W_mt);
     // fChain->SetBranchAddress("WGen_pt", &WGen_pt, &b_WGen_pt);
     // fChain->SetBranchAddress("WGen_rap", &WGen_rap, &b_WGen_rap);
@@ -356,16 +351,16 @@ void wmassAnalyzer::Init(TTree *tree)
     // fChain->SetBranchAddress("NuGen_mass", &NuGen_mass, &b_NuGen_mass);
     fChain->SetBranchAddress("Mu_pt", &Mu_pt, &b_Mu_pt);
     fChain->SetBranchAddress("Mu_eta", &Mu_eta, &b_Mu_eta);
-    fChain->SetBranchAddress("Mu_phi", &Mu_phi, &b_Mu_phi);
-    fChain->SetBranchAddress("Mu_mass", &Mu_mass, &b_Mu_mass);
+    // fChain->SetBranchAddress("Mu_phi", &Mu_phi, &b_Mu_phi);
+    // fChain->SetBranchAddress("Mu_mass", &Mu_mass, &b_Mu_mass);
     fChain->SetBranchAddress("Mu_charge", &Mu_charge, &b_Mu_charge);
     // fChain->SetBranchAddress("MuRelIso", &MuRelIso, &b_MuRelIso);
     // fChain->SetBranchAddress("Mu_dxy", &Mu_dxy, &b_Mu_dxy);
     // fChain->SetBranchAddress("Mu_dz", &Mu_dz, &b_Mu_dz);
     fChain->SetBranchAddress("MuIsTightAndIso", &MuIsTightAndIso, &b_MuIsTightAndIso);
     // fChain->SetBranchAddress("MuIsTight", &MuIsTight, &b_MuIsTight);
-    fChain->SetBranchAddress("pt_vis", &pt_vis, &b_pt_vis);
-    fChain->SetBranchAddress("phi_vis", &phi_vis, &b_phi_vis);
+    // fChain->SetBranchAddress("pt_vis", &pt_vis, &b_pt_vis);
+    // fChain->SetBranchAddress("phi_vis", &phi_vis, &b_phi_vis);
     // fChain->SetBranchAddress("MuGen_pt", &MuGen_pt, &b_MuGen_pt);
     // fChain->SetBranchAddress("MuGen_eta", &MuGen_eta, &b_MuGen_eta);
     // fChain->SetBranchAddress("MuGen_phi", &MuGen_phi, &b_MuGen_phi);
@@ -412,45 +407,26 @@ void wmassAnalyzer::RunJob(TString filename, bool isData){
   
 void wmassAnalyzer::Begin(TFile *file){ // book the histograms and all
     file->cd();
-    int nbins_mt = 250, nbins_muEta = 250;
-    float mt_min = 30., mt_max = 200.;
-    float muEta_min = -2.5, muEta_max = 2.5;
+    int nbins_mt    = 120; float mt_min    = 30. , mt_max    = 150.;
+    int nbins_muEta = 150; float muEta_min = -2.5, muEta_max = 2.5;
 
     // make histograms for mt and muEta
-    for (int m = 0; m<7; m++){
-        nominal_pos_mt   [m] = new TH1F(Form("nominal_pos_mt_m%d"   ,m), Form("nominal_pos_mt_m%d"   ,m), nbins_mt   , mt_min   , mt_max   );
-        nominal_pos_muEta[m] = new TH1F(Form("nominal_pos_muEta_m%d",m), Form("nominal_pos_muEta_m%d",m), nbins_muEta, muEta_min, muEta_max);
-        nominal_neg_mt   [m] = new TH1F(Form("nominal_neg_mt_m%d"   ,m), Form("nominal_neg_mt_m%d"   ,m), nbins_mt   , mt_min   , mt_max   );
-        nominal_neg_muEta[m] = new TH1F(Form("nominal_neg_muEta_m%d",m), Form("nominal_neg_muEta_m%d",m), nbins_muEta, muEta_min, muEta_max);
-        for (int p = 0; p<52; p++){
-            ct10_pos_mt   [m][p] = new TH1F(Form("ct10_pos_mt_m%d_p%d",m,p)   , Form("ct10_pos_mt_m%d_p%d",m,p)   , nbins_mt   , mt_min   , mt_max   );
-            ct10_pos_muEta[m][p] = new TH1F(Form("ct10_pos_muEta_m%d_p%d",m,p), Form("ct10_pos_muEta_m%d_p%d",m,p), nbins_muEta, muEta_min, muEta_max);
-            ct10_neg_mt   [m][p] = new TH1F(Form("ct10_neg_mt_m%d_p%d",m,p)   , Form("ct10_neg_mt_m%d_p%d",m,p)   , nbins_mt   , mt_min   , mt_max   );
-            ct10_neg_muEta[m][p] = new TH1F(Form("ct10_neg_muEta_m%d_p%d",m,p), Form("ct10_neg_muEta_m%d_p%d",m,p), nbins_muEta, muEta_min, muEta_max);
-        }
-    }
+    nominal_mtEta = new TH2F("nominal_mtEta", "nominal_mtEta", nbins_mt, mt_min, mt_max, nbins_muEta, muEta_min, muEta_max);
+    nominal_mtEta ->Sumw2();
+    for (int m = 0; m<fNMasses; m++){
+        for (int p = 0; p<fNPDFsCT10+1; p++){
+            ct10_mtEta[m][p] = new TH2F(Form("ct10_mtEta_m%d_p%d",m,p), Form("ct10_mtEta_m%d_p%d",m,p), nbins_mt, mt_min, mt_max, nbins_muEta, muEta_min, muEta_max);
+            ct10_mtEta[m][p] ->Sumw2();
+        } // end loop on pdf variations
+    } // end loop on masses
 }
 
 void wmassAnalyzer::End(TFile *file){
     file->cd();
-    for (int m = 0; m<7; m++){
-        nominal_mt       [m]= (TH1F*) nominal_pos_mt   [m]->Clone(Form("nominal_all_mt_m%d",m))   ; nominal_mt   [m]->Add(nominal_neg_mt   [m]); 
-        nominal_muEta    [m]= (TH1F*) nominal_pos_muEta[m]->Clone(Form("nominal_all_muEta_m%d",m)); nominal_muEta[m]->Add(nominal_neg_muEta[m]);
-        nominal_mt       [m]->Write();
-        nominal_muEta    [m]->Write();
-        nominal_pos_mt   [m]->Write(); 
-        nominal_pos_muEta[m]->Write();
-        nominal_neg_mt   [m]->Write(); 
-        nominal_neg_muEta[m]->Write();
-        for (int p = 0; p<52; p++){
-            ct10_mt   [m][p] =(TH1F*) ct10_pos_mt   [m][p]->Clone(Form("ct10_all_mt_m%d_p%d",m,p))   ; ct10_mt   [m][p] ->Add(ct10_neg_mt   [m][p]);
-            ct10_muEta[m][p] =(TH1F*) ct10_pos_muEta[m][p]->Clone(Form("ct10_all_muEta_m%d_p%d",m,p)); ct10_muEta[m][p] ->Add(ct10_neg_muEta[m][p]);
-            ct10_mt       [m][p] -> Write();
-            ct10_muEta    [m][p] -> Write();
-            ct10_pos_mt   [m][p] -> Write();
-            ct10_pos_muEta[m][p] -> Write();
-            ct10_neg_mt   [m][p] -> Write();
-            ct10_neg_muEta[m][p] -> Write();
+    nominal_mtEta -> Write();
+    for (int m = 0; m<fNMasses; m++){
+        for (int p = 0; p<fNPDFsCT10+1; p++){
+            ct10_mtEta[m][p] -> Write();
         }
     }
     //file->Write();
@@ -458,15 +434,15 @@ void wmassAnalyzer::End(TFile *file){
     gROOT->SetBatch();
     TCanvas * c = new TCanvas("sanity_check_pdfs", "sanity_check_pdfs", 800, 600);
     c->cd();
-    nominal_muEta[0] ->Draw("");
+    nominal_mtEta->ProjectionY()->Draw("");
     for (int i = 2; i<10; i++){
-        ct10_muEta[0][i] ->SetLineColor(i); ct10_muEta[0][i]->Draw("same");
+        ct10_mtEta[120][i] ->SetLineColor(i); ct10_mtEta[120][i]->ProjectionY()->Draw("same");
     }
     c->Write();
     c->Clear();
     c->SetName("sanity_check_masses");
     for (int i = 0; i<7; i++){
-        nominal_mt[i] ->SetLineColor(i+1); nominal_mt[i]->Draw("same");
+        ct10_mtEta[i][0] ->SetLineColor(i+1); ct10_mtEta[i][0]->ProjectionX()->Draw("same");
     }
     c->Write();
     
@@ -526,21 +502,15 @@ void wmassAnalyzer::Loop()
 
 void wmassAnalyzer::fillMTandETAHistograms(){
 
-    // loop on all ct10 variations
-    for (int m = 0; m<7 ; m++){
-    Mu_charge > 0 ? nominal_pos_mt   [m]->Fill(W_mt  , LHE_weight[202+m]) : nominal_neg_mt   [m]->Fill(W_mt  , LHE_weight[202+m]);
-    Mu_charge > 0 ? nominal_pos_muEta[m]->Fill(Mu_eta, LHE_weight[202+m]) : nominal_neg_muEta[m]->Fill(Mu_eta, LHE_weight[202+m]);
-    for (int p = 0; p<52; p++){
-        if(Mu_charge > 0){
-            ct10_pos_mt   [m][p] -> Fill(W_mt  , LHE_weight[309+p]*LHE_weight[202+m]) ;
-            ct10_pos_muEta[m][p] -> Fill(Mu_eta, LHE_weight[309+p]*LHE_weight[202+m]) ;
-        }
-        else{
-            ct10_neg_mt   [m][p] -> Fill(W_mt  , LHE_weight[309+p]*LHE_weight[202+m]) ;
-            ct10_neg_muEta[m][p] -> Fill(Mu_eta, LHE_weight[309+p]*LHE_weight[202+m]) ;
-        }
-    
-    } // end for loop over pdf variations
+    float wgt;
+    nominal_mtEta ->Fill(W_mt, Mu_eta);
+    for (int m = 0; m<fNMasses ; m++){
+        for (int p = 0; p<fNPDFsCT10+1; p++){
+            wgt = LHE_weight[m];
+            if (p!=0) 
+                wgt*=LHE_weight[308+p]; // the 0th is now the nominal pdf for all masses
+            ct10_mtEta[m][p] ->Fill(W_mt, Mu_eta, wgt);
+        } // end for loop over pdf variations
     } // end for loop over masses
 } // end fillMTandETAHistograms
 
