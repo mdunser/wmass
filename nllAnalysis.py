@@ -4,6 +4,7 @@ from multiprocessing import Pool
 
 class nllStruct:
     def __init__(self, infile, syst, expSig, sign = 'both'):
+        self.name  = ('with' if syst else 'without') + ' systematics ' + sign + ' charge'
         self.ifile = ROOT.TFile(infile)
         self.tree  = self.ifile.Get('limit')
         self.syst  = syst
@@ -17,24 +18,54 @@ class nllStruct:
         self.style = (24 if syst else 20) if sign == 'both' else (26 if syst else 22) if sign == 'plus' else (25 if syst else 21)
         self.histo.SetMarkerColor(self.color); self.histo.SetMarkerStyle(self.style); self.histo.SetMarkerSize(0.9);
         self.wname = 'w+w-' if sign=='both' else 'w+' if sign == 'plus' else 'w-'
-        self.sname = 'with syst.' if syst else 'w/o syst'
-        self.ename = 'expSig. %.3f'%expSig
+        self.sname = 'sys.' if syst else 'no sys'
+        self.ename = '%.1f'%(100*expSig)+'%' if expSig != 1 else ''
         self.fname = ' '.join([self.wname,self.sname,self.ename])
         self.fillHisto()
+        self.getWidth()
 
     def fillHisto(self):
+        nll0norm = 0.
+        for m in self.tree:
+            if m.quantileExpected == 0.5 and m.mh == 95:
+                nll0norm = m.nll0
         for i,m in enumerate(self.tree):
             #if i%4: continue
             if m.quantileExpected == 0.5:
                 nll  = m.nll
                 nll0 = m.nll0
                 mass = masses[m.mh]
-                if 90 < m.mh < 100:
-                    print 'filling mass %.4f with nll %.4f and nll0 %.4f'%(mass,nll,nll0)
-                if nll*-1 < 100 and nll*-1 >= 0.:
-                    self.histo.SetBinContent(self.histo.FindBin(mass-realMass), -1*(nll))
+                fillval = +1*(nll+nll0)-nll0norm
+                if 60 < m.mh < 130:
+                    #print 'filling mass %.4f with nll %.4f and nll0 %.4f'%(mass,nll,nll0)
+                #if True: #nll*-1 < 100 and nll*-1 >= 0.:
+                    self.histo.SetBinContent(self.histo.FindBin(mass-realMass), +1*(nll+nll0)-nll0norm)
                     self.histo.SetBinError  (self.histo.FindBin(mass-realMass),   0.001 )
                 #histo.Fill(mass, -1*(nll))
+        
+    def getWidth(self, y=0.5):
+        self.poly2 = ROOT.TF1('poly2','[0]+[1]*x+[2]*x*x',-1.*delta, delta)
+        self.poly2.FixParameter(0,0)
+        self.poly2.SetLineColor(self.color); self.poly2.SetLineStyle(1 if self.style < 24 else 2)
+        self.frp = self.histo.Fit('poly2','S Q')
+        ##frp = self.histo.Fit('pol2','S')
+        self.fr = self.frp.Get()
+        print 'fit chi2/ndf', self.fr.Chi2(), self.fr.Ndf()
+        p0 = self.fr.Value(0)
+        p1 = self.fr.Value(1)
+        p2 = self.fr.Value(2)
+        print p0, p1, p2
+    
+        p = p1/p2
+        q = (p0/p2 - y/p2)
+    
+        x1 = -1.*p/2 + math.sqrt(p**2/4 - q)
+        x2 = -1.*p/2 - math.sqrt(p**2/4 - q)
+        print 'mW = %.4f + %.4f - %.4f'%(p0+realMass,x1,x2)
+        self.width = (abs(x1)+abs(x2))/2
+        return x2,x1
+    
+
 
 def runCmd(cmd):
     #os.system('echo combine '+cmd)
@@ -49,14 +80,15 @@ def runCombine(njobs):
     afsbase = '/afs/cern.ch/user/m/mdunser/wmassSW/inputForCombine/masses/'
     for mi in range(202):
         for doSyst,expSig in itertools.product([0,1],[0.01]):
+            expSigString = '' if expSig == 1 else '_scale%s'%str(expSig).replace('.','p')
             syss = 'syst%d'%doSyst
             asis = '' if expSig == 1 else 'expSig%s'%(str(expSig).replace('.','p'))
             cdir = afsbase+syss+asis
             cdirp= afsbase+syss+asis+'Wplus'
             cdirm= afsbase+syss+asis+'Wminus'
-            df   = afsbase+'datacardMass{mi}.txt -m {mi}'.format(mi=mi)
-            dfp  = afsbase+'datacardMass{mi}plus.txt -m {mi}'.format(mi=mi)
-            dfm  = afsbase+'datacardMass{mi}minus.txt -m {mi}'.format(mi=mi)
+            df   = afsbase+'datacardMass{mi}{es}.txt -m {mi}'.format(mi=mi, es=expSigString)
+            dfp  = afsbase+'datacardMass{mi}plus{es}.txt -m {mi}'.format(mi=mi, es=expSigString)
+            dfm  = afsbase+'datacardMass{mi}minus{es}.txt -m {mi}'.format(mi=mi, es=expSigString)
             opt  = '-M MaxLikelihoodFit --saveNLL -t -1 -S %d'%doSyst
 #combine datacardMass95plus.txt  -M GenerateOnly -m 8888 -t -1 --expectSignal=1 --saveToys -S 1
 #combine datacardMass95minus.txt -M GenerateOnly -m 9999 -t -1 --expectSignal=1 --saveToys -S 1
@@ -69,20 +101,9 @@ def runCombine(njobs):
             tasks.append([cdirm,[dfm,opt,asifm]])
     print 'submitting %d jobs on %d cores'%(len(tasks), njobs)
     if len(tasks)/njobs > 10: print 'this might take a while'
+    #for i in tasks: print i
     pool.map(runCmd, tasks)
 
-def getWidth(pol2, y=0.5):
-    p0 = pol2.Value(0)
-    p1 = pol2.Value(1)
-    p2 = pol2.Value(2)
-
-    p = p1/p2
-    q = (p0/p2 - y/p2)
-
-    x1 = -1.*p/2 + math.sqrt(p**2/4 - q)
-    x2 = -1.*p/2 - math.sqrt(p**2/4 - q)
-    return x2,x1
-    
 
 def loadMassWeightIDs(weightfile):
     f = open('weights.info','r')
@@ -127,41 +148,35 @@ if __name__ == '__main__':
     syst0expSig1Plus  = nllStruct('inputForCombine/masses/syst0Wplus/syst0Wplus.root'  , 0, 1, 'plus' ); allFlavors.append(syst0expSig1Plus  )
     syst1expSig1Minus = nllStruct('inputForCombine/masses/syst1Wminus/syst1Wminus.root', 1, 1, 'minus'); allFlavors.append(syst1expSig1Minus )
     syst0expSig1Minus = nllStruct('inputForCombine/masses/syst0Wminus/syst0Wminus.root', 0, 1, 'minus'); allFlavors.append(syst0expSig1Minus )
-    ## all with expected signal 0.01
-    syst1expSig0p01Both  = nllStruct('inputForCombine/masses/syst1expSig0p01/syst1expSig0p01.root'            , 1, 0.01         ); allFlavors.append(syst1expSig0p01Both  )
-    syst0expSig0p01Both  = nllStruct('inputForCombine/masses/syst0expSig0p01/syst0expSig0p01.root'            , 0, 0.01         ); allFlavors.append(syst0expSig0p01Both  )
-    syst1expSig0p01Plus  = nllStruct('inputForCombine/masses/syst1expSig0p01Wplus/syst1expSig0p01Wplus.root'  , 1, 0.01, 'plus' ); allFlavors.append(syst1expSig0p01Plus  )
-    syst0expSig0p01Plus  = nllStruct('inputForCombine/masses/syst0expSig0p01Wplus/syst0expSig0p01Wplus.root'  , 0, 0.01, 'plus' ); allFlavors.append(syst0expSig0p01Plus  )
-    syst1expSig0p01Minus = nllStruct('inputForCombine/masses/syst1expSig0p01Wminus/syst1expSig0p01Wminus.root', 1, 0.01, 'minus'); allFlavors.append(syst1expSig0p01Minus )
-    syst0expSig0p01Minus = nllStruct('inputForCombine/masses/syst0expSig0p01Wminus/syst0expSig0p01Wminus.root', 0, 0.01, 'minus'); allFlavors.append(syst0expSig0p01Minus )
+    ## ## all with expected signal 0.01
+    ## syst1expSig0p01Both  = nllStruct('inputForCombine/masses/syst1expSig0p01/syst1expSig0p01.root'            , 1, 0.01         ); allFlavors.append(syst1expSig0p01Both  )
+    ## syst0expSig0p01Both  = nllStruct('inputForCombine/masses/syst0expSig0p01/syst0expSig0p01.root'            , 0, 0.01         ); allFlavors.append(syst0expSig0p01Both  )
+    ## syst1expSig0p01Plus  = nllStruct('inputForCombine/masses/syst1expSig0p01Wplus/syst1expSig0p01Wplus.root'  , 1, 0.01, 'plus' ); allFlavors.append(syst1expSig0p01Plus  )
+    ## syst0expSig0p01Plus  = nllStruct('inputForCombine/masses/syst0expSig0p01Wplus/syst0expSig0p01Wplus.root'  , 0, 0.01, 'plus' ); allFlavors.append(syst0expSig0p01Plus  )
+    ## syst1expSig0p01Minus = nllStruct('inputForCombine/masses/syst1expSig0p01Wminus/syst1expSig0p01Wminus.root', 1, 0.01, 'minus'); allFlavors.append(syst1expSig0p01Minus )
+    ## syst0expSig0p01Minus = nllStruct('inputForCombine/masses/syst0expSig0p01Wminus/syst0expSig0p01Wminus.root', 0, 0.01, 'minus'); allFlavors.append(syst0expSig0p01Minus )
 
     ROOT.gStyle.SetOptStat(0)
 
     c = ROOT.TCanvas('foo', 'bar', 800, 600)
-    leg = ROOT.TLegend(0.7, 0.1, 0.9, 0.4)
+    topr = True; errors = []
+    leg = ROOT.TLegend(0.65, 0.6 if topr else 0.1, 0.9, 0.9 if topr else 0.4)
+    leg.SetTextSize(0.02)
     leg.SetNColumns(2)
     for i,f in enumerate(allFlavors):
+        print '%-30s %s'%(f.name, f.width)
         if not i:
-            f.histo.GetYaxis().SetRangeUser(-0.,10)
+            #f.histo.GetYaxis().SetRangeUser(-0.,10)
             f.histo.SetTitle('a majestic plot')
             f.histo.GetXaxis().SetTitle('m_{test}-m_{W}')
-            f.histo.GetYaxis().SetTitle('-nll')
+            f.histo.GetYaxis().SetTitle('nll+(nll0-nll0_{nom})')
+        if not i%2:
+            errors.append('#sigma_{PDF} %s: %.3f'%(f.sign, math.sqrt(f.width**2 - allFlavors[i+1].width**2) ) )
         f.histo.Draw('pe same')
         leg.AddEntry(f.histo, f.fname, 'pe')
-
     leg.Draw('same')
 
+    lat = ROOT.TLatex(); lat.SetTextSize(0.025)
+    for i,err in enumerate(errors):
+        lat.DrawLatexNDC(0.15, 0.85-i*0.05, err)
 
-    #frp_hist11 = hist11.Fit('pol2','S')
-    #frp_hist00 = hist00.Fit('pol2','S')
-    #fr_hist11 = frp_hist11.Get()
-    #fr_hist00 = frp_hist00.Get()
-
-    #width11 = getWidth(fr_hist11)
-    #width00 = getWidth(fr_hist00)
-
-    #print width11
-    #print width00
-
-    
-    
