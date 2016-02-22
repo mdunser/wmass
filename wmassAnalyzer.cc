@@ -408,7 +408,7 @@ void wmassAnalyzer::RunJob(TString filename, bool isData){
 void wmassAnalyzer::Begin(TFile *file){ // book the histograms and all
     file->cd();
     int nbins_mt    = 120; float mt_min    = 30. , mt_max    = 150.;
-    int nbins_muEta = 150; float muEta_min = -2.5, muEta_max = 2.5;
+    int nbins_muEta =  10; float muEta_min = -2.5, muEta_max = 2.5;
 
     // make histograms for mt and muEta
     nominal_mtEta = new TH2F("nominal_mtEta", "nominal_mtEta", nbins_mt, mt_min, mt_max, nbins_muEta, muEta_min, muEta_max);
